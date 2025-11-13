@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>鸿图18期考试成绩查询</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		<style>
+			* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #6a11cb;
+            --dark: #121212;
+            --light: #f5f5f7;
+            --success: #00c853;
+            --warning: #ffab00;
+            --danger: #ff1744;
+        }
+
+        body {
+            background: linear-gradient(125deg, #0a0a2a, #1a1a4a, #2d2d5a);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: 
+                twinkle var(--duration, 5s) infinite ease-in-out,
+                move var(--move-duration, 20s) infinite linear;
+        }
+
+        .star.small {
+            width: 1px;
+            height: 1px;
+            opacity: 0.6;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            opacity: 0.8;
+        }
+
+        .star.large {
+            width: 3px;
+            height: 3px;
+            opacity: 1;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(var(--move-x, 100px), var(--move-y, 100px));
+            }
+        }
+
+        /* 流星效果 */
+        .meteor {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255,255,255,0.8);
+            z-index: -1;
+            opacity: 0;
+        }
+
+        @keyframes meteor {
+            0% {
+                opacity: 0;
+                transform: translateX(0) translateY(0) rotate(45deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(1000px) translateY(1000px) rotate(45deg);
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #8a2be2, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-group input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+            background: linear-gradient(to right, var(--accent), var(--primary));
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results-section {
+            display: none;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .score-excellent {
+            color: #4CAF50;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .score-good {
+            color: #FFC107;
+            text-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+        }
+
+        .score-average {
+            color: #FF9800;
+            text-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+        }
+
+        .score-poor {
+            color: #F44336;
+            text-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
+        }
+
+        .feedback {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .student-class {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .rank-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .rank-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rank-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .rank-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(78, 84, 200, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .score-display {
+                font-size: 4rem;
+            }
+        }
+    </style>
+	</head>
+	<body>
+		<!-- 星空背景 -->
+		<div class="stars" id="stars"></div>
+
+		<!-- 流星容器 -->
+		<div id="meteors"></div>
+
+		<div class="container">
+			<div class="header">
+				<h1>鸿图18期考试成绩查询</h1>
+				<p>请输入姓名查询您的考试成绩</p>
+			</div>
+
+			<div class="card search-section">
+				<div class="input-group">
+					<label for="studentName"><i class="fas fa-user"></i> 姓名</label>
+					<input type="text" id="studentName" placeholder="请输入您的姓名">
+				</div>
+				<button class="btn pulse" id="searchBtn">
+					<i class="fas fa-search"></i> 查询成绩
+				</button>
+			</div>
+
+			<div class="card results-section" id="resultsSection">
+				<div class="student-info">
+					<div class="student-name" id="resultName">测试</div>
+					<div class="student-class">鸿图18期学员</div>
+				</div>
+
+				<div class="score-display score-excellent" id="scoreDisplay">92</div>
+
+				<div class="feedback" id="feedback">
+					敬请期待！
+				</div>
+
+				<div class="rank-info">
+					<div class="rank-item">
+						<div class="rank-value" id="classRank">3</div>
+						<div class="rank-label">班级排名</div>
+					</div>
+					<div class="rank-item">
+						<div class="rank-value" id="totalStudents">22</div>
+						<div class="rank-label">班级人数</div>
+					</div>
+					<div class="rank-item">
+						<div class="rank-value" id="averageScore">78.5</div>
+						<div class="rank-label">班级平均分</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p>© 2025 鸿图18期 | 数据安全保护 | 技术支持: 政+DeepSeek</p>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const searchBtn = document.getElementById('searchBtn');
+				const resultsSection = document.getElementById('resultsSection');
+				const resultName = document.getElementById('resultName');
+				const scoreDisplay = document.getElementById('scoreDisplay');
+				const feedback = document.getElementById('feedback');
+				const classRank = document.getElementById('classRank');
+				const totalStudents = document.getElementById('totalStudents');
+				const averageScore = document.getElementById('averageScore');
+
+				// 模拟学生数据
+				const studentData = {
+					"李放": {
+						score: 95,
+						rank: 0
+					},
+					"宋相洁": {
+						score: 97,
+						rank: 0
+					},
+					"刘振慧": {
+						score: 98,
+						rank: 0
+					},
+					"卢均峰": {
+						score: 94,
+						rank: 0
+					},
+					"孙海翔": {
+						score: 95,
+						rank: 0
+					},
+					"王邵龙": {
+						score: 96,
+						rank: 0
+					},
+					"王硕": {
+						score: 96,
+						rank: 0
+					},
+					"何昂臻": {
+						score: 97,
+						rank: 0
+					},
+					"梁嘉": {
+						score: 92,
+						rank: 0
+					},
+					"郝宇昊": {
+						score: 91,
+						rank: 0
+					},
+					"李廷楷": {
+						score: 90,
+						rank: 0
+					},
+					"赵振秋": {
+						score: 90,
+						rank: 0
+					},
+					"史贺元": {
+						score: 89,
+						rank: 0
+					},
+					"辛俣桥": {
+						score: 89,
+						rank: 0
+					},
+					"于士勋": {
+						score: 88,
+						rank: 0
+					},
+					"孙钰博": {
+						score: 78,
+						rank: 0
+					},
+					"郑凌翔": {
+						score: 76,
+						rank: 0
+					},
+					"赵雪竹": {
+						score: -1,
+						rank: 0
+					},
+					"毛凤": {
+						score: -1,
+						rank:0
+					},
+					"张伊萱": {
+						score: 99,
+						rank: 0
+					},
+					"程一凡": {
+						score: -1,
+						rank: 0
+					},
+					"张致搏": {
+						score: 59,
+						rank: 0
+					}
+				};
+
+
+				// 转换为学生数组（方便处理）
+				const students = Object.values(studentData);
+
+				// 计算平均分（排除分数为-1的学生）
+				const calculateAverage = (students) => {
+					
+				  // 1. 筛选出分数不是-1的学生（有效分数）
+				  const validStudents = students.filter(student => student.score !== -1);
+				  
+				  if (validStudents.length === 0) {
+				    return 0;
+				  }
+				  
+				  // 3. 计算有效分数的总和
+				  let totalScore = 0;
+				  for (let i = 0; i < validStudents.length; i++) {
+				    totalScore += validStudents[i].score;
+				  }
+				  
+				  // 4. 计算平均分并保留1位小数
+				  const average = totalScore / validStudents.length;
+				  return Number(average.toFixed(1));
+				};
+
+				// 计算排名（按分数降序，同分同排名）
+				const calculateRanks = (students) => {
+					// 先按分数降序排序（复制数组避免修改原顺序）
+					const sortedStudents = [...students].sort((a, b) => b.score - a.score);
+
+					if (sortedStudents.length === 0) return;
+
+					let currentRank = 1;
+					let prevScore = sortedStudents[0].score;
+					sortedStudents[0].rank = currentRank; // 第一名
+			
+					// 从第二个学生开始计算
+					for (let i = 1; i < sortedStudents.length; i++) {
+						const student = sortedStudents[i];
+						if (student.score === prevScore) {
+							// 分数相同，排名相同
+							student.rank = currentRank;
+						} else {
+							// 分数不同，排名更新为当前索引+1
+							currentRank = i + 1;
+							student.rank = currentRank;
+							prevScore = student.score; // 更新参考分数
+						}
+					}
+				};
+
+				// 执行计算（避免重复声明变量）
+				calculateRanks(students);
+				//	赋值
+				const classInfo = {
+					total: students.length,
+					average: calculateAverage(students)
+				};
+
+
+				// 创建星空背景
+				function createStars() {
+					const starsContainer = document.getElementById('stars');
+					const starsCount = 300;
+
+					for (let i = 0; i < starsCount; i++) {
+						const star = document.createElement('div');
+
+						// 随机大小
+						const sizeType = Math.random();
+						if (sizeType < 0.6) {
+							star.classList.add('star', 'small');
+						} else if (sizeType < 0.9) {
+							star.classList.add('star', 'medium');
+						} else {
+							star.classList.add('star', 'large');
+						}
+
+						// 随机位置
+						const x = Math.random() * 100;
+						const y = Math.random() * 100;
+
+						// 随机闪烁持续时间
+						const duration = 3 + Math.random() * 7;
+
+						// 随机移动参数
+						const moveX = (Math.random() - 0.5) * 200;
+						const moveY = (Math.random() - 0.5) * 200;
+						const moveDuration = 15 + Math.random() * 30;
+
+						star.style.left = `${x}%`;
+						star.style.top = `${y}%`;
+						star.style.setProperty('--duration', `${duration}s`);
+						star.style.setProperty('--move-x', `${moveX}px`);
+						star.style.setProperty('--move-y', `${moveY}px`);
+						star.style.setProperty('--move-duration', `${moveDuration}s`);
+
+						starsContainer.appendChild(star);
+					}
+				}
+
+				// 创建流星
+				function createMeteors() {
+					const meteorsContainer = document.getElementById('meteors');
+
+					setInterval(() => {
+						const meteor = document.createElement('div');
+						meteor.classList.add('meteor');
+
+						// 随机位置
+						const x = Math.random() * 100;
+						const y = Math.random() * 30;
+
+						// 随机大小
+						const width = 100 + Math.random() * 200;
+
+						// 随机延迟
+						const delay = Math.random() * 10;
+
+						meteor.style.left = `${x}%`;
+						meteor.style.top = `${y}%`;
+						meteor.style.width = `${width}px`;
+						meteor.style.animation = `meteor ${1 + Math.random() * 2}s linear ${delay}s`;
+
+						meteorsContainer.appendChild(meteor);
+
+						// 移除流星元素
+						setTimeout(() => {
+							meteor.remove();
+						}, 3000);
+					}, 1000);
+				}
+
+				// 初始化背景
+				createStars();
+				createMeteors();
+				
+				// 90分以上反馈
+				let excellentFeedbacks = [
+				  '旗杆上挂灯笼——高明！这分数，亮眼得很～！',
+				  '凤凰头上戴牡丹——好上加好！这成绩，简直锦上添花～！',
+				  '飞机上挂暖瓶 —— 高水平（瓶）！这成绩，没的说～！' 
+				];
+				
+
+				searchBtn.addEventListener('click', function() {
+					const studentName = document.getElementById('studentName').value.trim();
+
+					// 简单的验证
+					if (!studentName) {
+						alert('请输入姓名');
+						return;
+					}
+
+					// 检查学生是否存在
+					if (studentData[studentName]) {
+						
+						const student = studentData[studentName];
+
+						// 更新学生信息
+						resultName.textContent = studentName;
+						scoreDisplay.textContent = student.score;
+
+						// 根据分数设置颜色和反馈
+						let scoreClass = 'score-poor';
+						let feedbackText = '需要继续努力，加油！';
+
+						
+
+						if (student.score < 0) {
+							scoreClass = 'score-poor';
+							feedbackText = '这次请假小插曲～ 下次攒足力气来考试，肯定能秀出你的真本事呀～！';
+						} else if (student.score >= 90) {
+							scoreClass = 'score-excellent';
+							feedbackText = excellentFeedbacks[Math.floor(Math.random() * excellentFeedbacks.length)];
+						}else if (student.score >= 80) {
+							scoreClass = 'score-good';
+							feedbackText = '程咬金的三斧头 —— 有点本事！稳扎稳打，不错哦～！';
+						} else if (student.score >= 70) {
+							scoreClass = 'score-average';
+							feedbackText = '矮子爬楼梯 —— 步步登高！再加把劲，空间大着呢～！';
+						} else {
+							scoreClass = 'score-poor';
+							feedbackText = '磨杵成针 —— 功到自然成！再加把劲，慢慢积累就会进步～！';
+						}
+
+						scoreDisplay.className = `score-display ${scoreClass}`;
+						feedback.textContent = feedbackText;
+
+						// 更新排名信息
+						classRank.textContent = student.rank;
+						totalStudents.textContent = classInfo.total;
+						averageScore.textContent = classInfo.average;
+
+						// 显示结果区域
+						resultsSection.style.display = 'block';
+
+						// 添加动画效果
+						resultsSection.classList.add('fade-in');
+					} else {
+						alert('未找到该学生的成绩信息，请检查姓名是否正确');
+					}
+				});
+
+				// 允许按回车键查询
+				document.getElementById('studentName').addEventListener('keypress', function(e) {
+					if (e.key === 'Enter') {
+						searchBtn.click();
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
